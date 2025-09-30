@@ -17,20 +17,24 @@ st.write("Enter passenger details to predict survival probability:")
 pclass = st.selectbox("Passenger Class", [1, 2, 3])
 sex = st.radio("Sex", ["male", "female"])
 age = st.slider("Age", 0, 80, 25)
+sibsp = st.number_input("Number of Siblings/Spouses Aboard (SibSp)", min_value=0, max_value=10, value=0)
+parch = st.number_input("Number of Parents/Children Aboard (Parch)", min_value=0, max_value=10, value=0)
 fare = st.slider("Fare", 0, 500, 50)
 embarked = st.selectbox("Port of Embarkation", ["C", "Q", "S"])
 
-# Convert inputs into dataframe
+# Convert inputs into dataframe with SAME feature names as training
 input_data = pd.DataFrame({
     "Pclass": [pclass],
     "Sex": [1 if sex == "female" else 0],
     "Age": [age],
+    "SibSp": [sibsp],
+    "Parch": [parch],
     "Fare": [fare],
     "Embarked_Q": [1 if embarked == "Q" else 0],
     "Embarked_S": [1 if embarked == "S" else 0]
 })
 
-# Use the SAME scaler from training
+# Scale Age & Fare (same as training)
 input_data[['Age', 'Fare']] = scaler.transform(input_data[['Age', 'Fare']])
 
 # Predict
